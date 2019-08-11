@@ -18,8 +18,8 @@
 
 ## Cons
 
-- Coil whine
-- FHD screen has backlight bleeding on top corners
+- [Coil whine](https://www.youtube.com/watch?v=lJQCRAKWe-K)
+- FHD screen has [backlight bleeding](https://www.hackint0sh.org/wp-content/uploads/2019/02/what-is-Backlight-Bleed.jpg) on top corners
 - Touchpad surface attracts small debris
 
 ## Setup BIOS
