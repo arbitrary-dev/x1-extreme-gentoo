@@ -1,6 +1,6 @@
 # How to setup Gentoo on Lenovo ThinkPad X1 Extreme
 
-![in progress](https://img.shields.io/badge/-in%20progress-red)
+![In progress](https://img.shields.io/badge/-In%20progress-red)
 
 *Think different, Think… Pad*
 
