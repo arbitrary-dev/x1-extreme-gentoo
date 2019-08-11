@@ -28,8 +28,6 @@
 1. Setup [Lenovo System Update](https://support.lenovo.com/lv/en/downloads/ds012808)
 1. Update BIOS:  
    `Win` → "System Update" → Get new updates → ThinkPad BIOS Update
-1. `Win` → "Manage BitLocker" → Suspend protection
-   (needed to disable Secure Boot)
 1. (optional) Config → Keyboard/Mouse → F1-F12 as Primary Function → "Enabled"
 1. `F10` Save and Exit
 
@@ -42,12 +40,12 @@
 1. Download [Rufus](https://rufus.ie)
 1. Boot selection → Disc or ISO image → SELECT → [SystemRescueCd](
    http://www.system-rescue-cd.org/Download)
-   ('cause [Minimal Installation CD](https://www.gentoo.org/downloads))
+   ('cause [Minimal Installation CD](https://www.gentoo.org/downloads)
    never worked for me)
 1. Partition scheme → MBR
 1. Target system → B♂IS or UEFI
 1. START
-1. Copy this repo & [stage3](https://www.gentoo.org/downloads) to the USB stick
+1. Copy this repo & [Stage 3](https://www.gentoo.org/downloads) to the USB stick
 
 ## Shrink Windows 10
 
@@ -169,7 +167,7 @@ mkdir -p /mnt/gentoo/home
 mount /dev/mapper/vg1-home /mnt/gentoo/home
 ```
 
-## Stage3
+## Stage 3
 
 ```
 USB=/run/archiso/bootmnt
