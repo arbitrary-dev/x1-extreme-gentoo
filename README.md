@@ -171,6 +171,8 @@ mount /dev/mapper/vg1-home /mnt/gentoo/home
 
 ## Stage 3
 
+### Prepare
+
 ```
 USB=/run/archiso/bootmnt
 cd /mnt/gentoo
@@ -181,18 +183,25 @@ cp /mnt/gentoo/usr/share/portage/config/repos.conf /mnt/gentoo/etc/portage/repos
 
 cp --dereference /etc/resolv.conf /mnt/gentoo/etc/
 
+# Copy Wi-Fi settings
+mkdir /mnt/gentoo/etc/wpa_supplicant \
+&& cp wpa.conf /mnt/gentoo/etc/wpa_supplicant/wpa_supplicant.conf
+```
+
+### Chroot
+```
 mount --types proc /proc /mnt/gentoo/proc
 mount --rbind /sys /mnt/gentoo/sys
 mount --rbind /dev /mnt/gentoo/dev
 
-# Copy Wi-Fi settings
-mkdir /mnt/gentoo/etc/wpa_supplicant \
-&& cp wpa.conf /mnt/gentoo/etc/wpa_supplicant/wpa_supplicant.conf
-
 chroot /mnt/gentoo /bin/bash
 source /etc/profile
 export PS1="(chroot) ${PS1}"
+```
 
+### Proceed
+
+```
 # Not available in SystemRescueCd
 # mirrorselect -i -o >> /etc/portage/make.conf
 
