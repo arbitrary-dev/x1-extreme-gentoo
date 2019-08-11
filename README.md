@@ -90,6 +90,8 @@ source $USB/setup-wifi.sh
 ssh root@<IP_from_previous_step>
 
 # Resume or create new session
+# [C-a D] to detach
+# [C-a H] to start/stop logging into screenlog.0
 screen -R
 ```
 
