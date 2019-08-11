@@ -90,20 +90,19 @@ source $USB/setup-wifi.sh
 ssh root@<IP_from_previous_step>
 
 # Resume or create new session
-# [C-a D] to detach
-# [C-a H] to start/stop logging into screenlog.0
+# `C-a ?` for commands list
+# `C-a d` to detach
+# `C-a [` to enter copy mode (hjkl - move, Enter/Space - copy, Esc - abort)
+# `C-a ]` to paste
+# `C-a H` to start/stop logging into screenlog.0
 screen -R
 ```
 
 ## Prepare the drive
 
-```
-# Create LUKS key-file
-export GPG_TTY=`tty`
-dd if=/dev/urandom bs=8388607 count=1 \
-| gpg --symmetric --cipher-algo AES256 --output luks-key.gpg
+### Partition
 
-# Make a primary partition
+```
 parted -a optimal /dev/nvme0n1
 
 (parted) unit s
@@ -124,8 +123,17 @@ NUM     STARTs      ENDs         SIZEs
 # Remember newly created partition
 PART=nvme0n1p<NUM>
 
-# Verify that it's right
+# Verify that it's the right one
 lsblk | grep $PART
+```
+
+### Encryption
+
+```
+# Create LUKS key-file
+export GPG_TTY=`tty`
+dd if=/dev/urandom bs=8388607 count=1 \
+| gpg --symmetric --cipher-algo AES256 --output luks-key.gpg
 
 # LUKS format partition
 gpg --decrypt luks-key.gpg \
@@ -148,8 +156,12 @@ rm -vf /tmp/gpgpipe
 cryptsetup luksOpen /dev/$PART gentoo
 # Verify 'gentoo' device is there
 ls /dev/mapper
+```
 
-# LVM logical volumes
+### LVM
+
+```
+# Create LVM logical volumes
 pvcreate /dev/mapper/gentoo
 vgcreate vg1 /dev/mapper/gentoo
 lvcreate --size 32G --name root vg1
