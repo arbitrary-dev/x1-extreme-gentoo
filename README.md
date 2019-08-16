@@ -175,9 +175,9 @@ ls /dev/mapper
 mkfs.ext4 -L root /dev/mapper/vg1-root
 mkfs.ext4 -m0 -L home /dev/mapper/vg1-home
 # Mount
-mkdir -p /mnt/gentoo
+mkdir /mnt/gentoo
 mount /dev/mapper/vg1-root /mnt/gentoo
-mkdir -p /mnt/gentoo/home
+mkdir /mnt/gentoo/home
 mount /dev/mapper/vg1-home /mnt/gentoo/home
 ```
 
@@ -190,10 +190,10 @@ USB=/run/archiso/bootmnt
 cd /mnt/gentoo
 tar xvJpf $USB/stage3-amd64-*.tar.xz --xattrs-include='*.*' --numeric-owner
 
-mkdir --parents /mnt/gentoo/etc/portage/repos.conf
+mkdir -p /mnt/gentoo/etc/portage/repos.conf
 cp /mnt/gentoo/usr/share/portage/config/repos.conf /mnt/gentoo/etc/portage/repos.conf/gentoo.conf
 
-cp --dereference /etc/resolv.conf /mnt/gentoo/etc/
+cp --dereference /etc/resolv.conf /mnt/gentoo/etc
 
 # Copy Wi-Fi settings
 mkdir /mnt/gentoo/etc/wpa_supplicant \
@@ -219,7 +219,7 @@ export PS1="(chroot) ${PS1}"
 
 emerge-webrsync
 
-#Set timezone
+# Set timezone
 ls /usr/share/zoneinfo
 echo 'Europe/Isle_of_Man' > /etc/timezone
 emerge --config sys-libs/timezone-data
@@ -231,13 +231,20 @@ eselect locale set "en_US.utf8"
 
 source /etc/profile
 
-# Setup make.conf
+# Setup Portage
 cp $USB/.bashrc /root
 cp /etc/skel/.bash_profile /root
-cp $USB/make.conf /etc/portage/make.conf
+cp -r $USB/portage /etc
 # Verify CPU_FLAGS_X86 in make.conf
 emerge -1 app-portage/cpuid2cpuflags
 cpuid2cpuflags
+
+# Add packages to build kernel to the @world list
+emerge -w \
+  sys-kernel/linux-firmware \
+  sys-kernel/gentoo-sources \
+  app-crypt/efitools \
+  sys-kernel/buildkernel
 
 # Verify
 emerge -pvuDN @world
