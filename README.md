@@ -64,9 +64,9 @@
 
 1. `Win` → "date & time" → Set appropriate values for your locale, and close
 1. Instruct Windows to use UTC:
-  1. `Win` → "regedit" → `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation`
-  1. Add new DWORD (32-bit Value): `RealTimeIsUniversal=1`
-  1. File → Exit
+   1. `Win` → "regedit" → `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation`
+   1. Add new DWORD (32-bit Value): `RealTimeIsUniversal=1`
+   1. File → Exit
 1. Disable the Windows Time Service:  
    `Win + R` → "cmd" → `Ctrl + Shift + Enter` → "sc config w32time start= disabled"
 1. Force Windows to update the time:  
