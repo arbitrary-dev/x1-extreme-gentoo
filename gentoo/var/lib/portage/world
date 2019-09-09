@@ -1,0 +1,9 @@
+app-crypt/efitools
+app-editors/vim
+app-misc/screen
+app-portage/gentoolkit
+dev-vcs/git
+net-misc/dhcpcd
+net-wireless/wpa_supplicant
+sys-kernel/buildkernel
+sys-kernel/linux-firmware

@@ -60,6 +60,18 @@
 1. Reboot
 1. `Win` → "partit" → Windows (C:) → Shrink Volume…
 
+## RTC for Windows 10
+
+1. `Win` → "date & time" → Set appropriate values for your locale, and close
+1. Instruct Windows to use UTC:
+  1. `Win` → "regedit" → `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation`
+  1. Add new DWORD (32-bit Value): `RealTimeIsUniversal=1`
+  1. File → Exit
+1. Disable the Windows Time Service:  
+   `Win + R` → "cmd" → `Ctrl + Shift + Enter` → "sc config w32time start= disabled"
+1. Force Windows to update the time:  
+   `Win` → "date & time" → Set time automatically → Off → On → Close window
+
 ## Boot with USB stick
 
 1. Restart and enter BIOS:  
@@ -189,11 +201,11 @@ mount /dev/mapper/vg1-home /mnt/gentoo/home
 USB=/run/archiso/bootmnt
 cd /mnt/gentoo
 tar xvJpf $USB/stage3-amd64-*.tar.xz --xattrs-include='*.*' --numeric-owner
+cp --dereference /etc/resolv.conf /mnt/gentoo/etc
+cp -r $USB/gentoo/* /mnt/gentoo/
 
 mkdir -p /mnt/gentoo/etc/portage/repos.conf
 cp /mnt/gentoo/usr/share/portage/config/repos.conf /mnt/gentoo/etc/portage/repos.conf/gentoo.conf
-
-cp --dereference /etc/resolv.conf /mnt/gentoo/etc
 
 # Copy Wi-Fi settings
 mkdir /mnt/gentoo/etc/wpa_supplicant \
@@ -201,14 +213,10 @@ mkdir /mnt/gentoo/etc/wpa_supplicant \
 ```
 
 ### Chroot
-```
-mount --types proc /proc /mnt/gentoo/proc
-mount --rbind /sys /mnt/gentoo/sys
-mount --rbind /dev /mnt/gentoo/dev
 
-chroot /mnt/gentoo /bin/bash
+```
+$USB/chroot.sh
 source /etc/profile
-export PS1="(chroot) ${PS1}"
 ```
 
 ### Proceed
@@ -232,22 +240,34 @@ eselect locale set "en_US.utf8"
 source /etc/profile
 
 # Setup Portage
-cp $USB/.bashrc /root
 cp /etc/skel/.bash_profile /root
-cp -r $USB/portage /etc
 # Verify CPU_FLAGS_X86 in make.conf
 emerge -1 app-portage/cpuid2cpuflags
 cpuid2cpuflags
-
-# Add packages to build kernel to the @world list
-emerge -w \
-  sys-kernel/linux-firmware \
-  sys-kernel/gentoo-sources \
-  app-crypt/efitools \
-  sys-kernel/buildkernel
 
 # Verify
 emerge -pvuDN @world
 # Update
 emerge -quDN @world
+
+# /tmp with tmpfs on 3g
+mount /tmp
+
+mkdir /boot/efi
+buildkernel
+
+cp /usr/share/dhcpcd/hooks/10-wpa_supplicant /lib/dhcpcd/dhcpcd-hooks/
+rc-update add dhcpcd default
+
+passwd
+sed -i 's/^#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+rc-update add sshd default
+
+# Leave chroot
+exit
+# Leave screen
+exit
+
+$USB/uchroot.sh
+reboot
 ```

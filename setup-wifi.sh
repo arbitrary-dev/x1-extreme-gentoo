@@ -60,6 +60,9 @@ if [ ! -f wpa.conf ] || ! _check_ssid $SSID; then
     rm .wpa.conf
     return 1
   fi
+  [ ! -f wpa.conf ] \
+    && echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=wheel" \
+    > wpa.conf
   cat .wpa.conf >> wpa.conf
   rm .wpa.conf
 fi
