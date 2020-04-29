@@ -1,6 +1,6 @@
 # How to setup Gentoo on Lenovo ThinkPad X1 Extreme
 
-![In progress](https://img.shields.io/badge/-In%20progress-red)
+![Done](https://img.shields.io/badge/-Done-green)
 
 *Think different, Think… Pad*
 
@@ -21,6 +21,14 @@
 - [Coil whine](https://www.youtube.com/watch?v=lJQCRAKWe-k)
 - FHD screen has [backlight bleeding](https://www.hackint0sh.org/wp-content/uploads/2019/02/what-is-Backlight-Bleed.jpg) on top corners
 - Touchpad surface attracts small debris
+- CPU's operating temperature:
+  - 50°C in powersave
+  - 60°C in performance
+  - 80°C under load
+
+## Kernel config
+
+This one is for 4.19.97: [.config](gentoo/usr/src/linux/.config)
 
 ## Setup BIOS
 
